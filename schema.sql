@@ -2,20 +2,20 @@ CREATE DATABASE IF NOT EXISTS world_of_garages;
 USE world_of_garages;
 
 CREATE TABLE IF NOT EXISTS garages (
-id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
---garage names seem to be 7 characters long in this data
-garage_name VARCHAR(7) NOT NULL,
---this was the longest owner (13 characters) in example data (Parkkitalo OY)
-owner_name VARCHAR(13) NOT NULL,
---example data only showed two digit values with one decimal place
-hourly_price DECIMAL(2.1),
--- all currencies have a 3-character long abbreviation, so it makes sense to use that
-currency VARCHAR(3),
-email VARCHAR(255),
-country VARCHAR(200),
---if I had more time, I'd look into https://dev.mysql.com/doc/refman/8.0/en/spatial-types.html
-latitude DECIMAL(17,15),
-longitude DECIMAL(17,15),
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    -- garage names seem to be 7 characters long in this data
+    garage_name VARCHAR(7) NOT NULL,
+    -- this was the longest owner (13 characters) in example data (Parkkitalo OY)
+    owner_name VARCHAR(13) NOT NULL,
+    -- example data only showed two digit values with one decimal place
+    hourly_price DECIMAL(2.1),
+    -- all currencies have a 3-character long abbreviation, so it makes sense to use that
+    currency VARCHAR(3),
+    email VARCHAR(255),
+    country VARCHAR(200),
+    -- if I had more time, I'd look into https://dev.mysql.com/doc/refman/8.0/en/spatial-types.html
+    latitude DECIMAL(17,15),
+    longitude DECIMAL(17,15)
 ) ENGINE=innodb;
 
 INSERT INTO
