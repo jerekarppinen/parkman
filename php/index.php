@@ -2,8 +2,8 @@
 
 $servername = "db";
 // $servername = "127.0.0.1";
-$username = "root";
-$password = "my_secret_pw_shh";
+$username = "devuser";
+$password = "devpass";
 $db = 'world_of_garages';
 
 // Create connection
@@ -14,5 +14,6 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 echo "Connected successfully";
+
 
 ?>

@@ -2,15 +2,18 @@ version: '3'
 
 services:
   db:
-    image: mysql
+    restart: always
+    image: mysql:latest
     command: --init-file /data/schema.sql
     volumes:
       - ./schema.sql:/data/schema.sql
+      - ./var/lib/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: my_secret_pw_shh
       MYSQL_DATABASE: world_of_garages
       MYSQL_USER: devuser
       MYSQL_PASSWORD: devpass
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "9906:3306"
   web:
