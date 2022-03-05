@@ -28,7 +28,22 @@ class Carage {
 
     public function getAllCarages(): array
     {
-        $query = $this->conn->query('SELECT * FROM garages ORDER BY id ASC;');
+        $query = $this->conn->query('
+        SELECT
+            garage_id,
+            garage_name,
+            owners.owner_id,
+            owners.owner_name,
+            hourly_price,
+            currency,
+            contact_email,
+            country,
+            latitude,
+            longitude
+        FROM garages
+        INNER JOIN owners
+        ON garages.owner_id = owners.owner_id;
+        ');
 
         $results = [];
 
