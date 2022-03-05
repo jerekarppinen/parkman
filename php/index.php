@@ -134,7 +134,7 @@ switch($_GET['query']) {
     case 'country':
         if(empty($_GET['country'])) {
             die(json_encode(
-                ['status' => 'Missing parameter: country']
+                ['result' => 'Missing parameter: country']
             ));
         }
         print(json_encode(
@@ -147,7 +147,7 @@ switch($_GET['query']) {
     case 'owner':
         if(empty($_GET['owner'])) {
             die(json_encode(
-                ['status' => 'Missing parameter: owner']
+                ['result' => 'Missing parameter: owner']
             ));
         }
         print(json_encode(
@@ -160,7 +160,7 @@ switch($_GET['query']) {
     case 'location':
         [$longitude, $latitude] = explode(',', $_GET['location']);
         if(empty($longitude) || empty($latitude)) die(json_encode(
-            ['status' => 'longitude and latitude required']
+            ['result' => 'longitude and latitude required']
         ));
         print(json_encode(
             [
