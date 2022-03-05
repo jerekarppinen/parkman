@@ -18,14 +18,17 @@ CREATE TABLE IF NOT EXISTS garages (
     country VARCHAR(200),
     -- if I had more time, I'd look into https://dev.mysql.com/doc/refman/8.0/en/spatial-types.html
     latitude DECIMAL(17,15),
-    longitude DECIMAL(17,15)
-);
+    longitude DECIMAL(17,15),
+    -- assume that users are looking for garages based on their location
+    -- so speed up the query with index
+    INDEX location_index (latitude, longitude)
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS owners (
     owner_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- this was the longest owner (13 characters) in example data (Parkkitalo OY)
     owner_name VARCHAR(13) NOT NULL
-);
+) ENGINE=InnoDB;
 
 INSERT INTO owners (owner_name) VALUES('AutoPark');
 INSERT INTO owners (owner_name) VALUES('Parkkitalo OY');
