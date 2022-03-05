@@ -9,11 +9,10 @@ CREATE TABLE IF NOT EXISTS garages (
     garage_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- garage names seem to be 7 characters long in this data
     garage_name VARCHAR(7) NOT NULL,
-    -- this was the longest owner (13 characters) in example data (Parkkitalo OY)
     owner_id INT,
     -- allow big numbers with two decimal places
     hourly_price DECIMAL(17,2),
-    -- all currencies have a 3-character long abbreviation, so it makes sense to use that
+    -- all currencies have a 3-character-long abbreviation, so it makes sense to use that
     currency VARCHAR(3),
     contact_email VARCHAR(255),
     country VARCHAR(200),
@@ -24,6 +23,7 @@ CREATE TABLE IF NOT EXISTS garages (
 
 CREATE TABLE IF NOT EXISTS owners (
     owner_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    -- this was the longest owner (13 characters) in example data (Parkkitalo OY)
     owner_name VARCHAR(13) NOT NULL
 );
 
