@@ -38,8 +38,7 @@ class Carage {
                 currency,
                 contact_email,
                 country,
-                latitude,
-                longitude
+                CONCAT_WS(" ", latitude, longitude) AS point
             FROM garages
             INNER JOIN owners
             ON garages.owner_id = owners.owner_id
@@ -82,7 +81,7 @@ class Carage {
 
     public function getCaragesByOwner(string $owner): array
     {
-        $statement = $this->conn->prepare('SELECT * FROM garages WHERE owner_name=?');
+        $statement = $this->conn->prepare($this->getBaseQuery() .  ' WHERE owner_name=?');
         $statement->bind_param('s', $owner);
         $statement->execute();
         $result = $statement->get_result();
@@ -98,7 +97,7 @@ class Carage {
 
     public function getCaragesByLocation(float $longitude, float $latitude): array
     {
-        $statement = $this->conn->prepare('SELECT * FROM garages WHERE longitude=? AND latitude=?');
+        $statement = $this->conn->prepare($this->getBaseQuery() . ' WHERE longitude=? AND latitude=?');
         $statement->bind_param('dd', $longitude, $latitude);
         $statement->execute();
         $result = $statement->get_result();
