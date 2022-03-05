@@ -1,29 +1,41 @@
+CREATE USER 'devuser'@'localhost' IDENTIFIED BY 'devpass';
+GRANT ALL PRIVILEGES ON *.* TO 'devuser'@'localhost';
+
 CREATE DATABASE IF NOT EXISTS world_of_garages;
+
 USE world_of_garages;
 
 CREATE TABLE IF NOT EXISTS garages (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    garage_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     -- garage names seem to be 7 characters long in this data
     garage_name VARCHAR(7) NOT NULL,
     -- this was the longest owner (13 characters) in example data (Parkkitalo OY)
-    owner_name VARCHAR(13) NOT NULL,
+    owner_id INT,
     -- example data only showed two digit values with one decimal place
     hourly_price DECIMAL(2.1),
     -- all currencies have a 3-character long abbreviation, so it makes sense to use that
     currency VARCHAR(3),
-    email VARCHAR(255),
+    contact_email VARCHAR(255),
     country VARCHAR(200),
     -- if I had more time, I'd look into https://dev.mysql.com/doc/refman/8.0/en/spatial-types.html
     latitude DECIMAL(17,15),
     longitude DECIMAL(17,15)
-) ENGINE=innodb;
+);
+
+CREATE TABLE IF NOT EXISTS owners (
+    owner_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    owner_name VARCHAR(13) NOT NULL
+);
+
+INSERT INTO owners (owner_name) VALUES('AutoPark');
+INSERT INTO owners (owner_name) VALUES('Parkkitalo OY');
 
 INSERT INTO
-    garages (garage_name, owner_name, hourly_price, currency, email, country, latitude, longitude)
+    garages (garage_name, owner_id, hourly_price, currency, contact_email, country, latitude, longitude)
 VALUES
     (
         'Garage1',
-        'AutoPark',
+        1,
         2,
         'EUR',
         'testemail@testautopark.fi',
@@ -33,11 +45,11 @@ VALUES
     );
 
 INSERT INTO
-    garages (garage_name, owner_name, hourly_price, currency, email, country, latitude, longitude)
+    garages (garage_name, owner_id, hourly_price, currency, contact_email, country, latitude, longitude)
 VALUES
     (
         'Garage2',
-        'AutoPark',
+        1,
         1.5,
         'EUR',
         'testemail@testautopark.fi',
@@ -47,11 +59,11 @@ VALUES
     );
 
 INSERT INTO
-    garages (garage_name, owner_name, hourly_price, currency, email, country, latitude, longitude)
+    garages (garage_name, owner_id, hourly_price, currency, contact_email, country, latitude, longitude)
 VALUES
     (
         'Garage3',
-        'AutoPark',
+        1,
         3,
         'EUR',
         'testemail@testautopark.fi',
@@ -61,11 +73,11 @@ VALUES
     );
 
 INSERT INTO
-    garages (garage_name, owner_name, hourly_price, currency, email, country, latitude, longitude)
+    garages (garage_name, owner_id, hourly_price, currency, contact_email, country, latitude, longitude)
 VALUES
     (
         'Garage4',
-        'AutoPark',
+        1,
         3,
         'EUR',
         'testemail@testautopark.fi',
@@ -75,11 +87,11 @@ VALUES
     );
 
 INSERT INTO
-    garages (garage_name, owner_name, hourly_price, currency, email, country, latitude, longitude)
+    garages (garage_name, owner_id, hourly_price, currency, contact_email, country, latitude, longitude)
 VALUES
     (
         'Garage5',
-        'AutoPark',
+        1,
         3,
         'EUR',
         'testemail@testautopark.fi',
@@ -89,15 +101,15 @@ VALUES
     );
 
 INSERT INTO
-    garages (garage_name, owner_name, hourly_price, currency, email, country, latitude, longitude)
+    garages (garage_name, owner_id, hourly_price, currency, contact_email, country, latitude, longitude)
 VALUES
     (
         'Garage6',
-        'Parkkitalo OY',
+        2,
         2,
         'EUR',
         'testemail@testgarage.fi',
-        'Finland',
+        'Ukraine',
         60.16867390148751,
         24.930162952045407
     );

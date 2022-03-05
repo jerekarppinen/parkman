@@ -4,10 +4,9 @@ services:
   db:
     restart: always
     image: mysql:latest
-    command: --init-file /data/schema.sql
     volumes:
-      - ./schema.sql:/data/schema.sql
       - ./var/lib/mysql:/var/lib/mysql
+      - ./db-dump:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: my_secret_pw_shh
       MYSQL_DATABASE: world_of_garages
