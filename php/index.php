@@ -5,6 +5,16 @@ $username = "devuser";
 $password = "devpass";
 $db = 'world_of_garages';
 
+$conn = new mysqli($servername, $username, $password, $db);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// give connection as parameter to class,
+// so in real world scenario this could be mocked for functional tests
+$carage = new Carage($conn);
+
 class Carage {
 
     private $conn;
@@ -12,17 +22,8 @@ class Carage {
     private const ALLOWED_COUNTRIES = ['Finland', 'Ukraine'];
 
     public function __construct(
-        string $servername,
-        string $username,
-        string $password,
-        string $db
+        $conn
     ) {
-        $conn = new mysqli($servername, $username, $password, $db);
-
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
         $this->conn = $conn;
     }
 
@@ -62,7 +63,7 @@ class Carage {
     {
         // just for the lols
         if(!in_array($country, self::ALLOWED_COUNTRIES)) {
-            return 'Bad country! Only these available: ' . implode(', ', self::ALLOWED_COUNTRIES);
+            die('Bad country! Only these available: ' . implode(', ', self::ALLOWED_COUNTRIES));
         }
 
         $statement = $this->conn->prepare($this->getBaseQuery() . ' WHERE country=?');
@@ -112,14 +113,15 @@ class Carage {
     }
 }
 
-$carage = new Carage(
-    $servername,
-    $username,
-    $password,
-    $db
-);
+$filterArgs = [
+    'query' => FILTER_SANITIZE_STRING,
+    'country' => FILTER_SANITIZE_STRING,
+    'owner' => FILTER_SANITIZE_STRING,
+    'location' => FILTER_SANITIZE_STRING,
+];
 
-// Todo: sanitize inputs
+$_GET = filter_var_array($_GET, $filterArgs);
+
 switch($_GET['query']) {
     case 'all':
         print(json_encode(
@@ -130,7 +132,7 @@ switch($_GET['query']) {
         ));
         break;
     case 'country':
-        if(!isset($_GET['country'])) {
+        if(empty($_GET['country'])) {
             die(json_encode(
                 ['status' => 'Missing parameter: country']
             ));
@@ -143,6 +145,11 @@ switch($_GET['query']) {
         ));
         break;
     case 'owner':
+        if(empty($_GET['owner'])) {
+            die(json_encode(
+                ['status' => 'Missing parameter: owner']
+            ));
+        }
         print(json_encode(
             [
                 'result' => true,
@@ -162,6 +169,11 @@ switch($_GET['query']) {
             ]
         ));
         break;
+    default:
+    print(json_encode(
+        ['result' => 'Invalid query params']
+    ));
+    break;
 }
 
 
