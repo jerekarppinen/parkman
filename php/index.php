@@ -26,24 +26,29 @@ class Carage {
         $this->conn = $conn;
     }
 
+    private function getBaseQuery() : string
+    {
+        return '
+            SELECT
+                garage_id,
+                garage_name,
+                owners.owner_id,
+                owners.owner_name,
+                hourly_price,
+                currency,
+                contact_email,
+                country,
+                latitude,
+                longitude
+            FROM garages
+            INNER JOIN owners
+            ON garages.owner_id = owners.owner_id
+        ';
+    }
+
     public function getAllCarages(): array
     {
-        $query = $this->conn->query('
-        SELECT
-            garage_id,
-            garage_name,
-            owners.owner_id,
-            owners.owner_name,
-            hourly_price,
-            currency,
-            contact_email,
-            country,
-            latitude,
-            longitude
-        FROM garages
-        INNER JOIN owners
-        ON garages.owner_id = owners.owner_id;
-        ');
+        $query = $this->conn->query($this->getBaseQuery());
 
         $results = [];
 
@@ -61,7 +66,7 @@ class Carage {
             return 'Bad country! Only these available: ' . implode(', ', self::ALLOWED_COUNTRIES);
         }
 
-        $statement = $this->conn->prepare('SELECT * FROM garages WHERE country=?');
+        $statement = $this->conn->prepare($this->getBaseQuery() . ' WHERE country=?');
         $statement->bind_param('s', $country);
         $statement->execute();
         $result = $statement->get_result();
