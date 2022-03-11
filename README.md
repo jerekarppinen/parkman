@@ -1,4 +1,4 @@
-# Parkman coding task
+# PHP template
 
 ### Requirements
 - Docker, docker-compose
